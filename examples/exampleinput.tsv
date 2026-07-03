@@ -1,0 +1,3 @@
+subject	session	raw_dir	tasks
+OCD153	1year	/home/cjacquet/scratch/SURG1F/MRI_Raw/OCD153_LW_1year_04152026/POUT1F-_1YR_FU_20260415_130921.800000	resting
+NMOC1	Preop	/home/cjacquet/scratch/SURG1F/MRI_Raw/NMOC1_EO_01132026/NMOC1F_BASELINE_20260113_093255.000000	rest,msit,gonogo

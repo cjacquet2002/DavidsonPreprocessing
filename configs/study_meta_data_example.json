@@ -1,0 +1,13 @@
+{"study design": {"session": 5, "task": true, "run": true, "rec": null, "recording": null}, 
+"modalities": {
+    "anat": {"Included": true, "acq": null, "ce": null, "part": null, "relatedfiles": null}, 
+    "func": {"Included": true, "acq": "TR1750", "ce": null, "dir": null, "echo": null, "part": null, "relatedfiles": ["json"]}, 
+    "dwi": {"Included": true, "acq": null, "dir": null, "part": null, "relatedfiles": ["bvec", "bval", "json"]}, 
+    "fmap": {"Included": true, 
+        "dwi":{ "acq": null, "part": null}, 
+        "func":{"acq": null, "part": null},
+        "intendedfor": ["dwi","func"], 
+        "relatedfiles": ["json"]}, 
+    "pet": {"Included": false, "tracers": ["18FAZD4694", "18FMK6240", "11CPBR28"], "relatedfiles": null}
+    }
+}

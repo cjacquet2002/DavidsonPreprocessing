@@ -1,0 +1,8 @@
+[project]
+name = "surg1f-bids"
+version = "0.1.0"
+dependencies = ["pandas", "numpy", "nibabel", "pydicom"]
+
+[project.scripts]
+extract-dicoms = "surg1f_bids.extract_dicoms:main"
+convert2bids = "surg1f_bids.convert2bids:main"

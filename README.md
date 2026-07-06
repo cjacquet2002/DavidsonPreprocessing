@@ -21,6 +21,10 @@ A preprocessing pipeline for converting MRI DICOM data into BIDS format.
 - FSL
 - Compute Canada or Linux environment
 
+## Notes
+- Multi-echo resting states must be called "rest"
+- All multiecho spinechos will be assigned to the resting state scans
+
 ## Installation
 
 ```bash

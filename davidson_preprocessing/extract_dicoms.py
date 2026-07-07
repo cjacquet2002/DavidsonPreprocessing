@@ -20,6 +20,7 @@ def get_series_number(ds):
     except Exception:
         return -1
 
+# extracting the protocol name and series description 
 def get_text(ds):
     protocol = str(getattr(ds, "ProtocolName", "")).lower()
     series_desc = str(getattr(ds, "SeriesDescription", "")).lower()

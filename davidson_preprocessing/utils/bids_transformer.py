@@ -708,8 +708,13 @@ def expand_multiecho_intendedfor(bids_dir):
             continue
         
         # locating func directory
-        intended_path = bids_path / intended
+        subject_dir = next(bids_path.glob("sub-*"))
+        intended_path = subject_dir / intended
         func_dir = intended_path.parent
+
+        print(f"Checking fmap: {fmap_json.name}")
+        print(f"  IntendedFor before: {intended}")
+        print(f"  func_dir: {func_dir}")
 
         # Case 1: IntendedFor has no run, so include all runs/echoes for that task
         if "_run-" not in intended_path.name:
@@ -728,9 +733,12 @@ def expand_multiecho_intendedfor(bids_dir):
 
             if all_targets:
                 data["IntendedFor"] = [
-                    str(f.relative_to(bids_path))
+                    str(f.relative_to(subject_dir))
                     for f in all_targets
                 ]
+            print(f"  no-run case, task={task}")
+            print(f"  echo matches: {[f.name for f in echo_files]}")
+            print(f"  single matches: {[f.name for f in single_files]}")
         # Case 2: fmap already points to one run; expand that run to all echoes
         else:
             echo_pattern = intended_path.name.replace("_bold.nii.gz", "_echo-*_bold.nii.gz")
@@ -738,7 +746,7 @@ def expand_multiecho_intendedfor(bids_dir):
 
             if echo_files:
                 data["IntendedFor"] = [
-                    str(f.relative_to(bids_path))
+                    str(f.relative_to(subject_dir))
                     for f in echo_files
                 ]
 
@@ -936,14 +944,14 @@ def create_bids(input_csv, meta_json, project, dcm_hierc, output, **kwargs):
 
                 line_count += 1
 
-    # Generate dervied AP fmaps after all the scans are converted
-    generate_ap_fmaps(bids_dir)
-    
     # Fix the echo naming
     fix_multiecho_names(bids_dir)
 
     # Fix the multiecho intended fors
     expand_multiecho_intendedfor(bids_dir)
+
+    # Generate dervied AP fmaps after all the scans are converted
+    generate_ap_fmaps(bids_dir)
 
     # Sanitize the jsons
     sanitize_jsons(bids_dir)

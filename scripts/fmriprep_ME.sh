@@ -11,8 +11,9 @@
 # Ensure the log folder exists
 mkdir -p /home/cjacquet/scratch/SURG1F/fmriprep_logs
 
-# Base dir one directory above bids raw etc
-base_dir=/home/cjacquet/scratch/SURG1F
+# Navigate to and echo the directory from where you called the sbatch
+cd $SLURM_SUBMIT_DIR
+echo $SLURM_SUBMIT_DIR
 
 # Load the fmriprep in a container
 module load apptainer fmriprep
@@ -22,12 +23,12 @@ SUBJ=${1}
 # SES=${2}
 
 # Define the pathway to the imporant directories
-bids_dir="${base_dir}/MRI_BIDS/sub-${SUBJ}"
-out_dir="${base_dir}/fmriprep_output"
-work_dir="${base_dir}/fmriprep_work"
-cache_dir="${base_dir}/fmriprep_cache"
-log_dir="${base_dir}/fmriprep_logs"
-fs_license="${base_dir}/fs_license.txt" # make sure your license exists here!!! (or change path)
+bids_dir="${SLURM_SUBMIT_DIR}/MRI_BIDS/sub-${SUBJ}"
+out_dir="${SLURM_SUBMIT_DIR}/fmriprep_output"
+work_dir="${SLURM_SUBMIT_DIR}/fmriprep_work"
+cache_dir="${SLURM_SUBMIT_DIR}/fmriprep_cache"
+log_dir="${out_dir}/fmriprep_logs"
+fs_license="${out_dir}/fs_license.txt"
 
 # Make sure each of these directories exist
 mkdir -p ${out_dir} ${work_dir} ${cache_dir} ${log_dir}

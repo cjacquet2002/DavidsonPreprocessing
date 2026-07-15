@@ -65,6 +65,7 @@ def classify_series(ds) -> str:
         "t1_mprage",
         "t2_tse",
         "t2_spc",
+        "flair",
         "t2_space"
     ]
 
@@ -72,6 +73,7 @@ def classify_series(ds) -> str:
     func_patterns = [
         "bold",
         "epi_cmrr",
+        "fmri",
         "spinechofieldmap",
         "spin echo fieldmap"
     ]
@@ -207,7 +209,7 @@ def copy_dicom_series(
     if category == "fmap":
 
         # for func reference maps
-        if "bold" in text or "epi_cmrr" in text:
+        if "bold" in text or "epi_cmrr" in text or "fmri" in text:
             extra = "func"
 
         # for spinecho fmaps
@@ -421,7 +423,7 @@ def get_bids_suffix(row):
     if category == "anat":
         if "t1" in series_folder:
             return "T1w"
-        elif "dark-fluid" in series_folder or "da-fl" in series_folder:
+        elif "dark-fluid" in series_folder or "da-fl" in series_folder or "flair" in series_folder:
             return "FLAIR"
         else:
             return "T2w"

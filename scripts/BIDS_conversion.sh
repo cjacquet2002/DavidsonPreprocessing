@@ -14,6 +14,8 @@ module load StdEnv/2023 scipy-stack/2026a fsl nibabel/5.2.0 dcm2niix
 dicom_dir=/home/cjacquet/scratch/SURG1F/MRI_DICOM
 bids_dir=/home/cjacquet/scratch/SURG1F/MRI_BIDS
 
+mkdir -p $dicom_dir $bids_dir 
+
 input_file=${1}
 
 line=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" "$input_file")

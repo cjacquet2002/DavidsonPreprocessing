@@ -817,11 +817,14 @@ def generate_ap_fmaps(bids_dir):
             # executing fslroi as shell command in subprocess
             subprocess.run(["fslroi", str(bold_file), str(ap_fmap), "0", "3"], check=True)
 
-            pa_json = pathlib.Path(str(pa_fmap).replace(".nii.gz", ".json"))
+            # Copy the JSON from the BOLD scan used to generate the AP fmap
+            bold_json = pathlib.Path(str(bold_file).replace(".nii.gz", ".json"))
             ap_json = pathlib.Path(str(ap_fmap).replace(".nii.gz", ".json"))
 
-            if pa_json.exists():
-                shutil.copyfile(pa_json, ap_json)
+            if bold_json.exists():
+                shutil.copyfile(bold_json, ap_json)
+            else:
+                print(f"No matching BOLD JSON found for {bold_file.name}")
         
         # now creating ap maps for dwi fmaps
         pa_dwi_fmaps = sorted(fmap_dir.glob("*acq-dwi*_dir-PA*_epi.nii.gz"))
@@ -842,11 +845,14 @@ def generate_ap_fmaps(bids_dir):
 
                     subprocess.run(["fslroi", str(dwi_file), str(ap_fmap), "65", "7"], check=True)
 
-                    pa_json = pathlib.Path(str(pa_fmap).replace(".nii.gz", ".json"))
+                    # Copy the JSON from the DWI scan used to generate the AP fmap
+                    dwi_json = pathlib.Path(str(dwi_file).replace(".nii.gz", ".json"))
                     ap_json = pathlib.Path(str(ap_fmap).replace(".nii.gz", ".json"))
 
-                    if pa_json.exists():
-                        shutil.copyfile(pa_json, ap_json)
+                    if dwi_json.exists():
+                        shutil.copyfile(dwi_json, ap_json)
+                    else:
+                        print(f"No matching DWI JSON found for {dwi_file.name}")
 
         for bad_file in list(fmap_dir.glob("*.bval")) + list(fmap_dir.glob("*.bvec")):
             bad_file.unlink()     

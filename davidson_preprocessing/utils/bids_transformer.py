@@ -818,13 +818,30 @@ def generate_ap_fmaps(bids_dir):
             subprocess.run(["fslroi", str(bold_file), str(ap_fmap), "0", "3"], check=True)
 
             # Copy the JSON from the BOLD scan used to generate the AP fmap
-            bold_json = pathlib.Path(str(bold_file).replace(".nii.gz", ".json"))
+            pa_json = pathlib.Path(str(pa_fmap).replace(".nii.gz", ".json"))
             ap_json = pathlib.Path(str(ap_fmap).replace(".nii.gz", ".json"))
 
-            if bold_json.exists():
-                shutil.copyfile(bold_json, ap_json)
+            if pa_json.exists():
+                shutil.copyfile(pa_json, ap_json)
+
+                with open(ap_json, "r") as f:
+                    data = json.load(f)
+
+                inverse = {
+                    "i": "i-",
+                    "i-": "i",
+                    "j": "j-",
+                    "j-": "j",
+                    "k": "k-",
+                    "k-": "k",
+                }
+
+                data["PhaseEncodingDirection"] = inverse[data["PhaseEncodingDirection"]]
+
+                with open(ap_json, "w") as f:
+                    json.dump(data, f, indent=4)
             else:
-                print(f"No matching BOLD JSON found for {bold_file.name}")
+                print(f"No matching JSON found for {bold_file.name}")
         
         # now creating ap maps for dwi fmaps
         pa_dwi_fmaps = sorted(fmap_dir.glob("*acq-dwi*_dir-PA*_epi.nii.gz"))
@@ -846,11 +863,28 @@ def generate_ap_fmaps(bids_dir):
                     subprocess.run(["fslroi", str(dwi_file), str(ap_fmap), "65", "7"], check=True)
 
                     # Copy the JSON from the DWI scan used to generate the AP fmap
-                    dwi_json = pathlib.Path(str(dwi_file).replace(".nii.gz", ".json"))
+                    pa_json = pathlib.Path(str(pa_fmap).replace(".nii.gz", ".json"))
                     ap_json = pathlib.Path(str(ap_fmap).replace(".nii.gz", ".json"))
 
-                    if dwi_json.exists():
-                        shutil.copyfile(dwi_json, ap_json)
+                    if pa_json.exists():
+                        shutil.copyfile(pa_json, ap_json)
+
+                        with open(ap_json, "r") as f:
+                            data = json.load(f)
+
+                        inverse = {
+                            "i": "i-",
+                            "i-": "i",
+                            "j": "j-",
+                            "j-": "j",
+                            "k": "k-",
+                            "k-": "k",
+                        }
+
+                        data["PhaseEncodingDirection"] = inverse[data["PhaseEncodingDirection"]]
+
+                        with open(ap_json, "w") as f:
+                            json.dump(data, f, indent=4)
                     else:
                         print(f"No matching DWI JSON found for {dwi_file.name}")
 

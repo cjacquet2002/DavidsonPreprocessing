@@ -198,10 +198,10 @@ def copy_dicom_series(
     # extracting the direction
     direction = ""
 
-    if "p>>a" in text or "p__a" in text or "pa" in text:
+    if "p>>a" in text or "p__a" in text or "p_a" in text or "p>a" in text or "pa" in text:
         direction = "PA"
 
-    elif "a>>p" in text or "a__p" in text or "ap" in text:
+    elif "a>>p" in text or "a__p" in text or "p_a" in text or "a>p" in text or "ap" in text:
         direction = "AP"
 
     # adding func/dwi to the extra row for fmap files
